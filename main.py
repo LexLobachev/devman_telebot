@@ -5,9 +5,8 @@ import telegram
 from decouple import config
 
 
-def send_tg_message(token, lesson_title, result, lesson_url):
+def send_tg_message(token, chat_id, lesson_title, result, lesson_url):
     bot = telegram.Bot(token)
-    chat_id = config('TG_CHAT_ID')
     message_to_customer = f"У вас проверили работу '[{lesson_title}]({lesson_url})'\n{result}"
     bot.send_message(chat_id=chat_id, text=message_to_customer, parse_mode="Markdown", disable_web_page_preview=True)
 
@@ -29,6 +28,7 @@ def get_reviews(token, timestamp):
 if __name__ == "__main__":
     devman_token = config('DEVMAN_TOKEN')
     tg_bot_token = config('TELEGRAM_BOT_TOKEN')
+    chat_id = config('TG_CHAT_ID')
     timestamp = None
     result = None
     lesson_title = None
@@ -47,7 +47,7 @@ if __name__ == "__main__":
                 result = "Преподавателю все понравилось, можно приступать к следующему уроку"
             lesson_title = reviews["new_attempts"][0]["lesson_title"]
             lesson_url = reviews["new_attempts"][0]["lesson_url"]
-            send_tg_message(tg_bot_token, lesson_title, result, lesson_url)
+            send_tg_message(tg_bot_token, chat_id, lesson_title, result, lesson_url)
         except requests.exceptions.HTTPError:
             print('Неверная ссылка')
         except requests.exceptions.ReadTimeout:
