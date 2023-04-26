@@ -32,7 +32,6 @@ if __name__ == "__main__":
     while True:
         try:
             reviews = get_reviews(devman_token, timestamp)
-            json_formatted_str = json.dumps(reviews, indent=2)
             if reviews["status"] == "found":
                 timestamp = reviews["last_attempt_timestamp"]
             else:
