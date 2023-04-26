@@ -1,4 +1,5 @@
 import json
+import time
 
 import requests
 import telegram
@@ -44,5 +45,6 @@ if __name__ == "__main__":
             print('Неверная ссылка')
         except requests.exceptions.ConnectionError:
             print('Нет подключения к сети')
+            time.sleep(90)
         except requests.exceptions.ReadTimeout:
             pass
