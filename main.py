@@ -5,12 +5,6 @@ import telegram
 from decouple import config
 
 
-def send_tg_message(token, chat_id, lesson_title, result, lesson_url):
-    bot = telegram.Bot(token)
-    message_to_customer = f"У вас проверили работу '[{lesson_title}]({lesson_url})'\n{result}"
-    bot.send_message(chat_id=chat_id, text=message_to_customer, parse_mode="Markdown", disable_web_page_preview=True)
-
-
 def get_reviews(token, timestamp):
     api_endpoint = "https://dvmn.org/api/long_polling/"
     headers = {
@@ -29,6 +23,7 @@ if __name__ == "__main__":
     tg_bot_token = config('TELEGRAM_BOT_TOKEN')
     chat_id = config('TG_CHAT_ID')
     timestamp = None
+    bot = telegram.Bot(tg_bot_token)
     while True:
         try:
             reviews = get_reviews(devman_token, timestamp)
@@ -42,7 +37,9 @@ if __name__ == "__main__":
                     result = "Преподавателю все понравилось, можно приступать к следующему уроку"
                 lesson_title = reviews["new_attempts"][0]["lesson_title"]
                 lesson_url = reviews["new_attempts"][0]["lesson_url"]
-                send_tg_message(tg_bot_token, chat_id, lesson_title, result, lesson_url)
+                message_to_customer = f"У вас проверили работу '[{lesson_title}]({lesson_url})'\n{result}"
+                bot.send_message(chat_id=chat_id, text=message_to_customer, parse_mode="Markdown",
+                                 disable_web_page_preview=True)
         except requests.exceptions.HTTPError:
             print('Неверная ссылка')
         except requests.exceptions.ReadTimeout:
