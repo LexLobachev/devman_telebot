@@ -13,7 +13,7 @@ def get_reviews(token, timestamp):
     payload = {
         "timestamp": timestamp
     }
-    response = requests.get(api_endpoint, headers=headers, timeout=110, params=payload)
+    response = requests.get(api_endpoint, headers=headers, timeout=90, params=payload)
     response.raise_for_status()
     return response.json()
 
@@ -42,7 +42,7 @@ if __name__ == "__main__":
                                  disable_web_page_preview=True)
         except requests.exceptions.HTTPError:
             print('Неверная ссылка')
-        except requests.exceptions.ReadTimeout:
-            print('Сервис не ответил по каким то причинам, пробуем послать еще один запрос')
         except requests.exceptions.ConnectionError:
             print('Нет подключения к сети')
+        except requests.exceptions.ReadTimeout:
+            pass
