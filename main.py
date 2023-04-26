@@ -19,7 +19,7 @@ def get_reviews(token, timestamp):
     payload = {
         "timestamp": timestamp
     }
-    response = requests.get(api_endpoint, headers=headers, timeout=90, params=payload)
+    response = requests.get(api_endpoint, headers=headers, timeout=110, params=payload)
     response.raise_for_status()
     return response.json()
 
@@ -32,17 +32,17 @@ if __name__ == "__main__":
     while True:
         try:
             reviews = get_reviews(devman_token, timestamp)
-            if reviews["status"] == "found":
-                timestamp = reviews["last_attempt_timestamp"]
-            else:
+            if reviews["status"] == "timeout":
                 timestamp = reviews["timestamp_to_request"]
-            if reviews["new_attempts"][0]["is_negative"]:
-                result = "К сожалению, в работе нашлись ошибки"
-            else:
-                result = "Преподавателю все понравилось, можно приступать к следующему уроку"
-            lesson_title = reviews["new_attempts"][0]["lesson_title"]
-            lesson_url = reviews["new_attempts"][0]["lesson_url"]
-            send_tg_message(tg_bot_token, chat_id, lesson_title, result, lesson_url)
+            elif reviews["status"] == "found":
+                timestamp = reviews["last_attempt_timestamp"]
+                if reviews["new_attempts"][0]["is_negative"]:
+                    result = "К сожалению, в работе нашлись ошибки"
+                else:
+                    result = "Преподавателю все понравилось, можно приступать к следующему уроку"
+                lesson_title = reviews["new_attempts"][0]["lesson_title"]
+                lesson_url = reviews["new_attempts"][0]["lesson_url"]
+                send_tg_message(tg_bot_token, chat_id, lesson_title, result, lesson_url)
         except requests.exceptions.HTTPError:
             print('Неверная ссылка')
         except requests.exceptions.ReadTimeout:
