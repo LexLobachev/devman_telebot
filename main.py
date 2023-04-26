@@ -21,7 +21,6 @@ def get_reviews(token, timestamp):
     }
     response = requests.get(api_endpoint, headers=headers, timeout=90, params=payload)
     response.raise_for_status()
-    response.json()
     return response.json()
 
 
@@ -30,9 +29,6 @@ if __name__ == "__main__":
     tg_bot_token = config('TELEGRAM_BOT_TOKEN')
     chat_id = config('TG_CHAT_ID')
     timestamp = None
-    result = None
-    lesson_title = None
-    lesson_url = None
     while True:
         try:
             reviews = get_reviews(devman_token, timestamp)
