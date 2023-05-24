@@ -65,9 +65,9 @@ if __name__ == "__main__":
                 bot.send_message(chat_id=chat_id, text=message_to_customer, parse_mode="Markdown",
                                  disable_web_page_preview=True)
         except requests.exceptions.HTTPError:
-            logger.info('Неверная ссылка')
+            logger.warning('Неверная ссылка')
         except requests.exceptions.ConnectionError:
-            logger.info('Нет подключения к сети')
+            logger.warning('Нет подключения к сети')
             time.sleep(90)
         except requests.exceptions.ReadTimeout:
             pass
