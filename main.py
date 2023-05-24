@@ -1,9 +1,21 @@
-import json
+import logging
 import time
 
 import requests
 import telegram
 from decouple import config
+
+
+class MyLogsHandler(logging.Handler):
+
+    def __init__(self, tg_bot, chat_id):
+        super().__init__()
+        self.tg_bot = tg_bot
+        self.chat_id = chat_id
+
+    def emit(self, record):
+        log_entry = self.format(record)
+        self.tg_bot.send_message(chat_id=self.chat_id, text=log_entry)
 
 
 def get_reviews(token, timestamp):
@@ -22,9 +34,20 @@ def get_reviews(token, timestamp):
 if __name__ == "__main__":
     devman_token = config('DEVMAN_TOKEN')
     tg_bot_token = config('TELEGRAM_BOT_TOKEN')
+    tg_admin_bot_token = config('TELEGRAM_ADMIN_BOT_TOKEN')
     chat_id = config('TG_CHAT_ID')
+    admin_chat_id = config('TG_ADMIN_CHAT_ID')
+
     timestamp = None
+
     bot = telegram.Bot(tg_bot_token)
+    admin_bot = telegram.Bot(tg_admin_bot_token)
+
+    logger = logging.getLogger("tg_logger")
+    logger.setLevel(logging.INFO)
+    logger.addHandler(MyLogsHandler(admin_bot, admin_chat_id))
+    logger.info("Бот запущен")
+
     while True:
         try:
             reviews = get_reviews(devman_token, timestamp)
@@ -42,9 +65,9 @@ if __name__ == "__main__":
                 bot.send_message(chat_id=chat_id, text=message_to_customer, parse_mode="Markdown",
                                  disable_web_page_preview=True)
         except requests.exceptions.HTTPError:
-            print('Неверная ссылка')
+            logger.info('Неверная ссылка')
         except requests.exceptions.ConnectionError:
-            print('Нет подключения к сети')
+            logger.info('Нет подключения к сети')
             time.sleep(90)
         except requests.exceptions.ReadTimeout:
             pass

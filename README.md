@@ -29,7 +29,9 @@ For example, if you print `.env` content, you will see:
 $ cat .env
 DEVMAN_TOKEN=your_devman_api_token
 TELEGRAM_BOT_TOKEN=your_telegram_bot_token
+TELEGRAM_ADMIN_BOT_TOKEN=your_admin_telegram_bot_token
 TG_CHAT_ID=your_telegram_chat_id
+TG_ADMIN_CHAT_ID=your_admin_telegram_chat_id
 ```
 
 #### How to get
@@ -37,8 +39,9 @@ TG_CHAT_ID=your_telegram_chat_id
 * Register on telegram service [telegram](https://web.telegram.org/z/). Default recipient for
   messages. [Contact @myidbot](https://telegram.me/myidbot)
   on Telegram to get and copy your `tg_chat_id`
-* Telegram bot token. [Contact @BotFather](https://telegram.me/botfather) to obtain a `telegram_bot_token`.
-* Get your `your_devman_api_token` from [here](https://dvmn.org/api/docs/)
+* Telegram bot token. [Contact @BotFather](https://telegram.me/botfather) to obtain `telegram_bot_token` & `your_admin_telegram_bot_token`.
+* Get your `your_admin_telegram_chat_id` & `your_devman_api_token` from [here](https://dvmn.org/api/docs/)
+* `your_admin_telegram_bot_token` & `your_devman_api_token` are for your admin
 
 ## Run
 
