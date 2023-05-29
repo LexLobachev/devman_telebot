@@ -18,7 +18,9 @@ pip3 install -r requirements.txt
 
 - DEVMAN_TOKEN
 - TELEGRAM_BOT_TOKEN
+- TELEGRAM_ADMIN_BOT_TOKEN
 - TG_CHAT_ID
+- TG_ADMIN_CHAT_ID
 
 1. Put `.env` file near `requirements.txt`.
 2. `.env` contains text data without quotes.
