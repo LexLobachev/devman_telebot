@@ -6,6 +6,9 @@ import telegram
 from decouple import config
 
 
+logger = logging.getLogger("tg_logger")
+
+
 class MyLogsHandler(logging.Handler):
 
     def __init__(self, tg_bot, chat_id):
@@ -43,7 +46,6 @@ if __name__ == "__main__":
     bot = telegram.Bot(tg_bot_token)
     admin_bot = telegram.Bot(tg_admin_bot_token)
 
-    logger = logging.getLogger("tg_logger")
     logger.setLevel(logging.INFO)
     logger.addHandler(MyLogsHandler(admin_bot, admin_chat_id))
     logger.info("Бот запущен")
