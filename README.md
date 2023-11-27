@@ -52,3 +52,25 @@ Launch on Linux(Python 3) or Windows:
 ```bash
 $(venv) python3 main.py
 ```
+
+## Run with Docker
+
+[Docker](https://www.docker.com/get-started/) should be already installed. Create an image. Launch on Linux(Python 3) or Windows:
+
+```bash
+docker build -t devman_notificator .
+```
+
+Then create a container:
+
+```bash
+docker run -d --env-file .env devman_notificator
+```
+
+To stop container:
+
+```bash
+docker stop your_container_id
+```
+
+Use `docker ps` command to find out your docker container_id
