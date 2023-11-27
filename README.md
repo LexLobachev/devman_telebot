@@ -1,4 +1,4 @@
-# vk_auto_publisher
+# devman_notificator
 
 The program monitors the verification of your work from the [devman](https://dvmn.org/) site using
 their [api](https://dvmn.org/api/docs/) and sends the results of lessons to you in
